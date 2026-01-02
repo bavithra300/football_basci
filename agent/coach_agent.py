@@ -1,20 +1,20 @@
-import google.generativeai as genai
+from gemini_client import get_model
 
 def coach_agent(position):
-    model = genai.GenerativeModel("gemini-pro")
+    model = get_model()
 
     prompt = f"""
-You are an AI football coach.
+    You are an elite football AI coach.
 
-User requested players for position: {position}
+    Position needed: {position}
 
-Your task:
-1. Decide search keywords
-2. Decide important metrics for a coach
-3. Guide tools to fetch and analyze data
+    Do the following:
+    1. Decide web search keywords
+    2. Decide key performance metrics
+    3. Decide how players should be ranked
 
-Return only clear instructions.
-"""
+    Respond ONLY in bullet points.
+    """
 
     response = model.generate_content(prompt)
     return response.text

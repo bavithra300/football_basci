@@ -1,18 +1,24 @@
 from agent.coach_agent import coach_agent
-from agent.planner import plan_tools
-from tools.web_search import search_players
-from tools.extractor import extract_player_stats
+from agent.planner import planner
+
+from tools.web_search import web_search
+from tools.extractor import extract
+from tools.analyzer import analyze
+from tools.ranker import rank
+
 from report.coach_report import generate_report
 
-position = input("Enter position (Goalkeeper / Defender / Midfielder / Forward): ")
+def run(position):
+    coach_output = coach_agent(position)
+    plan = planner(coach_output)
 
-print("\n🧠 Agent Reasoning:\n")
-print(coach_agent(position))
+    raw_data = web_search(position)
+    extracted = extract(raw_data)
+    analyzed = analyze(extracted)
+    ranked = rank(analyzed)
 
-plan = plan_tools(position)
-raw_data = search_players(plan["search_query"])
+    report = generate_report(ranked)
+    print(report)
 
-players_text = extract_player_stats(raw_data, position)
-
-print("\n📋 FINAL COACH REPORT\n")
-print(players_text)
+if __name__ == "__main__":
+    run("Midfielder")
